@@ -1,14 +1,3 @@
-// Data access layer shared by every hook/component in the app.
-//
-// Callers never talk to Supabase or LocalStorage directly — they call
-// bookingService below. Every function resolves to a { data, error }
-// shape so calling code can handle both backends identically, whichever
-// one is actually active.
-//
-// Backend selection happens once, based on whether Supabase env vars were
-// provided at build time (see src/supabaseClient.js). This satisfies the
-// "no backend configured yet" case: the whole app keeps working against
-// LocalStorage until a real Supabase project is connected.
 
 import { supabase, isSupabaseConfigured } from '../supabaseClient'
 import { loadTable, saveTable, generateId } from './storage'
@@ -21,13 +10,9 @@ const BOOKINGS_TABLE = 'bookings'
 // ---------------------------------------------------------------------
 
 export const bookingService = {
-  /**
-   * List bookings, optionally constrained to an inclusive [from, to]
-   * ISO date range. A row is stored for anything that isn't plain
-   * VACANT — a customer reservation (status BOOKED) or an admin-created
-   * hold (status UNAVAILABLE, e.g. a tournament block). A slot with no
-   * matching row is simply vacant.
-   */
+  
+  // List bookings, optionally constrained to an inclusive [from, to] ISO date range. 
+   
   async list({ from, to } = {}) {
     if (isSupabaseConfigured) {
       let query = supabase.from(BOOKINGS_TABLE).select('*')
@@ -49,8 +34,7 @@ export const bookingService = {
   /**
    * Creates one row. `status` defaults to BOOKED (a customer reservation).
    * Pass status: 'UNAVAILABLE' to block a slot instead (e.g. a tournament
-   * hold) — customer_name doubles as the block's reason/label in that
-   * case, e.g. "Tournament".
+   * hold).
    */
   async create(booking) {
     const payload = {
@@ -77,13 +61,9 @@ export const bookingService = {
     return { data: row, error: null }
   },
 
-  /**
-   * Inserts many UNAVAILABLE (or BOOKED) rows at once — used by the Block
-   * Schedule tool to set up a recurring tournament hold across many
-   * court/date/time combinations in one action. Any slot that's already
-   * taken is silently skipped rather than failing the whole batch, and
-   * the caller gets back a count of what actually landed.
-   */
+
+   // Inserts many UNAVAILABLE (or BOOKED) rows at once 
+   
   async bulkCreate(bookings) {
     if (bookings.length === 0) return { data: [], skipped: 0, error: null }
 
@@ -144,7 +124,7 @@ export const bookingService = {
     return { data: updated, error: updated ? null : new Error('Booking not found') }
   },
 
-  /** Cancel a booking — deletes the row, which returns the slot to VACANT. */
+  /** Cancel a booking, deletes the row, which returns the slot to VACANT. */
   async remove(id) {
     if (isSupabaseConfigured) {
       const { error } = await supabase.from(BOOKINGS_TABLE).delete().eq('id', id)

@@ -1,9 +1,7 @@
-// Courts offered at the facility. Kept as a simple array so adding a 4th
-// court later is a one-line change everywhere in the app.
+
 export const COURTS = [1, 2, 3]
 
-// Operating hours: strictly 1-hour increments, 6:00 AM through 10:00 PM.
-// Each entry is the *start* hour of a 1-hour slot (e.g. "06:00" -> 6-7am).
+// Operating hours: strictly 1-hour increments.
 export const OPEN_HOUR = 6 // 6:00 AM
 export const CLOSE_HOUR = 22 // 10:00 PM (last bookable slot starts at 21:00)
 
@@ -48,9 +46,7 @@ export const WEEKDAY_GROUPS = {
   WEEKENDS: [0, 6],
 }
 
-// One-click starting point for the recurring tournament block described
-// by the club: 6-9pm on weekdays, 5-9pm on weekends. Still fully editable
-// in the Block Schedule tool before it's applied.
+
 export const TOURNAMENT_BLOCK_PRESET = {
   label: 'Tournament',
   weekdayStart: '18:00',

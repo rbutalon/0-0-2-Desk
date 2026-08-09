@@ -1,16 +1,7 @@
 import { Lock, Pencil, Plus, X } from 'lucide-react'
 import { BOOKING_STATUS } from '../../lib/constants'
 
-/**
- * One hourly slot for one court, in the admin-editable grid. Three states:
- *  - VACANT       -> dashed "add booking" affordance + a small quick-block icon
- *  - BOOKED       -> solid jade card with customer name + edit/cancel
- *  - UNAVAILABLE  -> slate/striped "blocked" card with a reason label
- *                    (e.g. "Tournament") + edit/unblock
- *
- * (Screenshot Mode uses its own dedicated ScreenshotDayCard component
- * instead of this one — see components/scheduler/ScreenshotDayCard.jsx.)
- */
+
 export default function SlotCell({ booking, onAdd, onEdit, onCancel, onBlock }) {
   const status = booking?.status ?? BOOKING_STATUS.VACANT
   const isBooked = status === BOOKING_STATUS.BOOKED

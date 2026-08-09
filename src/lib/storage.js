@@ -1,5 +1,3 @@
-// Thin, defensive wrapper around window.localStorage. Every read/write is
-// try/caught so a private-browsing quota error never crashes the app.
 
 const NAMESPACE = '002-desk'
 

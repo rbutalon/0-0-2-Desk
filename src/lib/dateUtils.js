@@ -1,7 +1,3 @@
-// All dates in 0-0-2 Desk are handled as local-time "YYYY-MM-DD" strings.
-// We deliberately avoid new Date("YYYY-MM-DD") for arithmetic since that
-// string form is parsed as UTC by JS and shifts a day in negative-UTC
-// timezones. Instead we construct Date objects from Y/M/D components.
 
 export function toISODate(date) {
   const y = date.getFullYear()
@@ -48,9 +44,6 @@ export function startOfMonth(iso) {
   return toISODate(new Date(date.getFullYear(), date.getMonth(), 1))
 }
 
-// Returns a flat array of ISO date strings forming complete weeks
-// (Sun-Sat) that cover the given month, including leading/trailing days
-// from adjacent months so the calendar grid is always rectangular.
 export function getMonthGrid(iso) {
   const first = fromISODate(startOfMonth(iso))
   const gridStart = addDays(toISODate(first), -first.getDay())

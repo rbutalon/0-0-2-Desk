@@ -1,33 +1,22 @@
 @import "tailwindcss";
-/* Fonts are loaded via <link> tags in index.html (see <head>) rather than
-   a CSS @import — that keeps the stylesheet import order spec-compliant
-   and lets the browser fetch fonts earlier, in parallel with the CSS. */
 
 @theme {
-  /* Brand palette — sourced directly from the Pasay 0-0-2 / PCPC logos:
-     the jade text green and the fresh mint ball green, set against a
-     cool near-white so the whole UI reads calmer and cleaner than a
-     warm/sand palette. Token names are kept stable across the app;
      only the values changed. */
-  --color-court-forest: #1f6a4c;   /* deep jade — headers, primary actions, booked slots */
-  --color-court-sage: #5cbd8f;     /* fresh mint-emerald — hover states, vacant outline */
-  --color-court-sand: #e3f2ea;     /* cool mint-gray — table headers, soft dividers */
-  --color-court-cream: #f5fbf8;    /* near-white, cool-tinted page background */
+  --color-court-forest: #1f6a4c;  
+  --color-court-sage: #5cbd8f;    
+  --color-court-sand: #e3f2ea;    
+  --color-court-cream: #f5fbf8;    
 
-  /* Derived neutrals for text + hairlines — cool green-charcoal, not warm ink */
   --color-court-ink: #16241d;
   --color-court-ink-soft: #57695f;
   --color-court-line: #dbeee3;
 
-  /* A closed/blocked slot reads as neutral slate, never green — keeping
-     green reserved for "open for business" states (vacant/booked). */
   --color-status-unavailable: #64748b;
   --color-status-unavailable-soft: #e9ecf1;
 
   --color-status-danger: #c0473a;
   --color-status-danger-soft: #f5e2df;
 
-  /* Small, sparing accents pulled from the ball colors in both logos. */
   --color-accent-lime: #9ac400;
   --color-accent-cyan: #4fd0d8;
 
@@ -59,7 +48,6 @@
     color: var(--color-court-ink);
   }
 
-  /* Visible keyboard focus everywhere */
   :focus-visible {
     outline: 2px solid var(--color-court-forest);
     outline-offset: 2px;
@@ -89,7 +77,6 @@
     background-color: transparent;
   }
 
-  /* Dashed "net line" motif — 0-0-2 Desk's recurring signature divider */
   .net-line {
     background-image: repeating-linear-gradient(
       to right,
@@ -105,9 +92,6 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* Diagonal stripe texture for UNAVAILABLE slots — reads as "closed"
-     even in grayscale screenshots or for colorblind users, without
-     relying on color alone. */
   .stripe-unavailable {
     background-image: repeating-linear-gradient(
       135deg,
