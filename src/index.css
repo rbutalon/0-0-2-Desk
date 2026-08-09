@@ -1,11 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-     only the values changed. */
-  --color-court-forest: #1f6a4c;  
-  --color-court-sage: #5cbd8f;    
-  --color-court-sand: #e3f2ea;    
-  --color-court-cream: #f5fbf8;    
+  --color-court-forest: #1f6a4c;   
+  --color-court-sage: #5cbd8f;     
+  --color-court-sand: #e3f2ea;     
+  --color-court-cream: #f5fbf8;   
 
   --color-court-ink: #16241d;
   --color-court-ink-soft: #57695f;

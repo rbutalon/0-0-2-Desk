@@ -1,4 +1,4 @@
-import { Smartphone, QrCode, Landmark } from 'lucide-react'
+import { Smartphone, QrCode, Landmark, X } from 'lucide-react'
 import { TIME_SLOTS, BOOKING_STATUS } from '../../lib/constants'
 import pasay002Full from '../../assets/pasay-002-full.jpg'
 import pcpcBadge from '../../assets/pcpc-badge.jpg'
@@ -19,16 +19,24 @@ function shortHourLabel(hour24) {
 export default function ScreenshotDayCard({ dateLabel, courts, bookingsBySlot }) {
   return (
     <div className="relative overflow-hidden rounded-2xl border border-court-sand bg-court-cream p-4 shadow-card sm:p-6">
-      <div className="absolute -right-3 -top-3 h-14 w-14 overflow-hidden rounded-full ring-4 ring-court-cream sm:h-16 sm:w-16">
-        <img src={pcpcBadge} alt="" className="h-full w-full object-cover" />
-      </div>
 
       <div className="mb-4 flex flex-col items-center gap-2 text-center">
-        <img
+        <div className='flex gap-3 justify-center items-center'>
+          <img
           src={pasay002Full}
           alt="Pasay 0-0-2 Pickleball Court"
           className="h-14 w-auto rounded-lg object-contain sm:h-20"
         />
+
+          <X size={18}/>
+    
+
+         <img
+          src={pcpcBadge}
+          alt="Pasay 0-0-2 Pickleball Court"
+          className="h-14 w-auto rounded-lg object-contain sm:h-20"
+        />
+        </div>
         <div>
           <h1 className="font-display text-lg font-bold text-court-ink sm:text-xl">{dateLabel}</h1>
           <p className="text-xs font-medium text-court-ink-soft">Court availability</p>

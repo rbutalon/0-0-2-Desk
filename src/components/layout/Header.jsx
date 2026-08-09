@@ -1,13 +1,14 @@
 import { Camera } from 'lucide-react'
 import paddleMark from '../../assets/pasay-002-mark.jpg'
+import paddleFull from '../../assets/pasay-002-full.jpg'
 
 export default function Header({ screenshotMode, onToggleScreenshotMode }) {
   return (
     <header className="sticky top-0 z-40 border-b border-court-line bg-court-cream/90 backdrop-blur-sm">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <div className="flex items-center gap-2.5">
-          <span className="h-9 w-9 overflow-hidden rounded-xl ring-1 ring-court-line">
-            <img src={paddleMark} alt="" className="h-full w-full object-cover" />
+          <span className="h-12 w-auto overflow-hidden rounded-lg ring-1 ring-court-forest">
+            <img src={paddleFull} alt="" className="h-full w-full object-cover" />
           </span>
           <div>
             <span className="block font-display text-lg font-bold leading-tight tracking-tight text-court-ink">
