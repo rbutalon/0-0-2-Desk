@@ -209,7 +209,7 @@ export default function SchedulerTab({ screenshotMode, onExitScreenshotMode }) {
             onNewBooking={() =>
               openAddModal({
                 court: courtFilter === 'all' ? COURTS[0] : courtFilter,
-                date: anchorDate,
+                date: anchorDate < todayISO() ? todayISO() : anchorDate,
                 slot: { value: '06:00' },
               })
             }

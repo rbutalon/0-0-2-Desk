@@ -3,7 +3,7 @@ export const COURTS = [1, 2, 3]
 
 // Operating hours: strictly 1-hour increments.
 export const OPEN_HOUR = 6 // 6:00 AM
-export const CLOSE_HOUR = 22 // 10:00 PM (last bookable slot starts at 21:00)
+export const CLOSE_HOUR = 27 // 3:00 AM (last bookable slot)
 
 export const TIME_SLOTS = Array.from(
   { length: CLOSE_HOUR - OPEN_HOUR },
@@ -19,9 +19,14 @@ export const TIME_SLOTS = Array.from(
 )
 
 export function formatHourLabel(hour24) {
-  const period = hour24 >= 12 ? 'PM' : 'AM'
-  let hour12 = hour24 % 12
+  // Normalize hours beyond midnight back to 0–23
+  const normalizedHour = hour24 % 24
+
+  const period = normalizedHour >= 12 ? 'PM' : 'AM'
+
+  let hour12 = normalizedHour % 12
   if (hour12 === 0) hour12 = 12
+
   return `${hour12}:00 ${period}`
 }
 
@@ -48,7 +53,7 @@ export const WEEKDAY_GROUPS = {
 
 
 export const TOURNAMENT_BLOCK_PRESET = {
-  label: 'Tournament',
+  label: 'Open Play',
   weekdayStart: '18:00',
   weekdayEnd: '21:00', // last bookable slot start; blocks 6-9pm
   weekendStart: '17:00',

@@ -25,6 +25,7 @@ function newRule(dayGroup = 'WEEKDAYS', start = 18, end = 21) {
 
 export default function BlockScheduleModal({ open, onClose, onBlock, saving }) {
   const [reason, setReason] = useState('Tournament')
+  const [description, setDescription] = useState('')
   const [fromDate, setFromDate] = useState(todayISO())
   const [toDate, setToDate] = useState(addDays(todayISO(), 6))
   const [courts, setCourts] = useState(COURTS)
@@ -34,6 +35,7 @@ export default function BlockScheduleModal({ open, onClose, onBlock, saving }) {
 
   function resetIfClosed() {
     setReason('Tournament')
+    setDescription('')
     setFromDate(todayISO())
     setToDate(addDays(todayISO(), 6))
     setCourts(COURTS)
@@ -103,6 +105,7 @@ export default function BlockScheduleModal({ open, onClose, onBlock, saving }) {
               booking_date: cursor,
               time_slot: timeSlot,
               customer_name: reason.trim() || 'Unavailable',
+              notes: description.trim() || null,
               status: 'UNAVAILABLE',
             })
           }
@@ -120,6 +123,10 @@ export default function BlockScheduleModal({ open, onClose, onBlock, saving }) {
 
     if (!fromDate || !toDate || fromDate > toDate) {
       setFormError('Pick a valid date range.')
+      return
+    }
+    if (fromDate < todayISO()) {
+      setFormError('The start date can\u2019t be in the past.')
       return
     }
     if (courts.length === 0) {
@@ -170,13 +177,24 @@ export default function BlockScheduleModal({ open, onClose, onBlock, saving }) {
         </button>
 
         <label className="flex flex-col gap-1.5 text-sm font-medium text-court-ink">
-          Reason
+          Name
           <input
             type="text"
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             placeholder="e.g. Tournament"
             className="rounded-lg border border-court-line bg-white px-3 py-2 text-sm outline-none focus:border-court-forest"
+          />
+        </label>
+
+        <label className="flex flex-col gap-1.5 text-sm font-medium text-court-ink">
+          Description <span className="font-normal text-court-ink-soft">(optional)</span>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={2}
+            placeholder="Bracket details, organizer contact, etc."
+            className="resize-none rounded-lg border border-court-line bg-white px-3 py-2 text-sm outline-none focus:border-court-forest"
           />
         </label>
 
@@ -187,6 +205,7 @@ export default function BlockScheduleModal({ open, onClose, onBlock, saving }) {
               type="date"
               value={fromDate}
               onChange={(e) => setFromDate(e.target.value)}
+              min={todayISO()}
               required
               className="rounded-lg border border-court-line bg-white px-3 py-2 text-sm outline-none focus:border-court-forest"
             />
@@ -197,6 +216,7 @@ export default function BlockScheduleModal({ open, onClose, onBlock, saving }) {
               type="date"
               value={toDate}
               onChange={(e) => setToDate(e.target.value)}
+              min={fromDate || todayISO()}
               required
               className="rounded-lg border border-court-line bg-white px-3 py-2 text-sm outline-none focus:border-court-forest"
             />

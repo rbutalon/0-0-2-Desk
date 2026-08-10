@@ -1,75 +1,92 @@
-import { Lock, Pencil, Plus, X } from 'lucide-react'
+import { Lock, Plus, X } from 'lucide-react'
 import { BOOKING_STATUS } from '../../lib/constants'
 
-
-export default function SlotCell({ booking, onAdd, onEdit, onCancel, onBlock }) {
+export default function SlotCell({ booking, disabled, onAdd, onEdit, onCancel, onBlock }) {
   const status = booking?.status ?? BOOKING_STATUS.VACANT
   const isBooked = status === BOOKING_STATUS.BOOKED
   const isUnavailable = status === BOOKING_STATUS.UNAVAILABLE
 
   if (isBooked) {
     return (
-      <div className="group relative flex h-16 flex-col justify-between overflow-hidden rounded-lg bg-court-forest px-2.5 py-2 text-court-cream sm:h-[68px]">
-        <div className="flex items-center justify-between">
+      <div
+        className={`group relative flex h-16 flex-col justify-between overflow-hidden rounded-lg text-court-cream sm:h-[68px] ${
+          disabled ? 'bg-court-forest/45' : 'bg-court-forest'
+        }`}
+      >
+        <button
+          type="button"
+          onClick={onEdit}
+          disabled={disabled}
+          aria-label={`View booking for ${booking.customer_name}`}
+          className={`absolute inset-0 h-full w-full px-2.5 py-2 text-left ${disabled ? 'cursor-default' : 'cursor-pointer'}`}
+        >
           <span className="text-[10px] font-bold uppercase tracking-wider text-court-cream/80">
             Booked
           </span>
-          <div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
-            <button
-              type="button"
-              onClick={onEdit}
-              aria-label={`Edit booking for ${booking.customer_name}`}
-              className="cursor-pointer rounded p-0.5 hover:bg-white/20"
-            >
-              <Pencil size={12} />
-            </button>
-            <button
-              type="button"
-              onClick={onCancel}
-              aria-label={`Cancel booking for ${booking.customer_name}`}
-              className="cursor-pointer rounded p-0.5 hover:bg-white/20"
-            >
-              <X size={12} />
-            </button>
-          </div>
-        </div>
-        <p className="truncate text-sm font-semibold" title={booking.customer_name}>
-          {booking.customer_name}
-        </p>
+          <p className="truncate pt-3 text-sm font-semibold" title={booking.customer_name}>
+            {booking.customer_name}
+          </p>
+        </button>
+        {!disabled && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              onCancel()
+            }}
+            aria-label={`Cancel booking for ${booking.customer_name}`}
+            className="absolute right-1.5 top-1.5 cursor-pointer rounded p-0.5 opacity-0 transition-opacity hover:bg-white/20 group-hover:opacity-100 group-focus-within:opacity-100"
+          >
+            <X size={12} />
+          </button>
+        )}
       </div>
     )
   }
 
   if (isUnavailable) {
     return (
-      <div className="group stripe-unavailable relative flex h-16 flex-col justify-between overflow-hidden rounded-lg bg-status-unavailable px-2.5 py-2 text-white sm:h-[68px]">
-        <div className="flex items-center justify-between">
+      <div
+        className={`group stripe-unavailable relative flex h-16 flex-col justify-between overflow-hidden rounded-lg text-white sm:h-[68px] ${
+          disabled ? 'bg-status-unavailable/45' : 'bg-status-unavailable'
+        }`}
+      >
+        <button
+          type="button"
+          onClick={onEdit}
+          disabled={disabled}
+          aria-label={`View block: ${booking.customer_name}`}
+          className={`absolute inset-0 h-full w-full px-2.5 py-2 text-left ${disabled ? 'cursor-default' : 'cursor-pointer'}`}
+        >
           <span className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-white/80">
             <Lock size={10} />
             Blocked
           </span>
-          <div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
-            <button
-              type="button"
-              onClick={onEdit}
-              aria-label={`Edit block: ${booking.customer_name}`}
-              className="cursor-pointer rounded p-0.5 hover:bg-white/20"
-            >
-              <Pencil size={12} />
-            </button>
-            <button
-              type="button"
-              onClick={onCancel}
-              aria-label={`Remove block: ${booking.customer_name}`}
-              className="cursor-pointer rounded p-0.5 hover:bg-white/20"
-            >
-              <X size={12} />
-            </button>
-          </div>
-        </div>
-        <p className="truncate text-sm font-semibold" title={booking.customer_name}>
-          {booking.customer_name || 'Unavailable'}
-        </p>
+          <p className="truncate pt-3 text-sm font-semibold" title={booking.customer_name}>
+            {booking.customer_name || 'Unavailable'}
+          </p>
+        </button>
+        {!disabled && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              onCancel()
+            }}
+            aria-label={`Remove block: ${booking.customer_name}`}
+            className="absolute right-1.5 top-1.5 cursor-pointer rounded p-0.5 opacity-0 transition-opacity hover:bg-white/20 group-hover:opacity-100 group-focus-within:opacity-100"
+          >
+            <X size={12} />
+          </button>
+        )}
+      </div>
+    )
+  }
+
+  if (disabled) {
+    return (
+      <div className="flex h-16 flex-col items-center justify-center gap-0.5 rounded-lg border border-court-line bg-court-cream/60 text-court-ink-soft/50 sm:h-[68px]">
+        <span className="text-[10px] font-bold uppercase tracking-wider">Vacant</span>
       </div>
     )
   }
@@ -92,7 +109,7 @@ export default function SlotCell({ booking, onAdd, onEdit, onCancel, onBlock }) 
         }}
         aria-label="Block this slot"
         title="Block this slot"
-        className="absolute right-1 top-1 cursor-pointer rounded p-0.5 text-court-sage opacity-0 transition-opacity hover:bg-court-forest/10 hover:text-status-unavailable group-hover:opacity-100"
+        className="absolute right-1 top-1 cursor-pointer rounded p-0.5 text-court-sage opacity-40 transition-opacity hover:bg-court-forest/10 hover:text-status-unavailable group-hover:opacity-100"
       >
         <Lock size={11} />
       </button>

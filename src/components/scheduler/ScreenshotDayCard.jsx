@@ -9,34 +9,27 @@ const PAYMENT_ICONS = {
   bank: Landmark,
 }
 
-function shortHourLabel(hour24) {
-  const period = hour24 >= 12 ? 'PM' : 'AM'
-  let hour12 = hour24 % 12
-  if (hour12 === 0) hour12 = 12
-  return `${hour12} ${period}`
-}
-
 export default function ScreenshotDayCard({ dateLabel, courts, bookingsBySlot }) {
   return (
     <div className="relative overflow-hidden rounded-2xl border border-court-sand bg-court-cream p-4 shadow-card sm:p-6">
-
+ 
       <div className="mb-4 flex flex-col items-center gap-2 text-center">
-        <div className='flex gap-3 justify-center items-center'>
+        <div className='flex items-center gap-3'>
           <img
           src={pasay002Full}
           alt="Pasay 0-0-2 Pickleball Court"
           className="h-14 w-auto rounded-lg object-contain sm:h-20"
         />
 
-          <X size={18}/>
-    
+        <X size={16}/>
 
-         <img
+        <img
           src={pcpcBadge}
           alt="Pasay 0-0-2 Pickleball Court"
           className="h-14 w-auto rounded-lg object-contain sm:h-20"
         />
         </div>
+
         <div>
           <h1 className="font-display text-lg font-bold text-court-ink sm:text-xl">{dateLabel}</h1>
           <p className="text-xs font-medium text-court-ink-soft">Court availability</p>
@@ -77,7 +70,7 @@ export default function ScreenshotDayCard({ dateLabel, courts, bookingsBySlot })
                             : 'border border-court-sage/60 bg-white text-court-forest'
                       }`}
                     >
-                      <span className="tabular-nums">{shortHourLabel(slot.hour)}</span>
+                      <span className="tabular-nums">{slot.label}</span>
                       <span className="text-[8px] tracking-wide">
                         {isBooked ? 'BOOKED' : isUnavailable ? 'BLOCKED' : 'VACANT'}
                       </span>

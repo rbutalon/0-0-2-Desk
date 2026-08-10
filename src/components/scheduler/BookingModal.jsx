@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Modal from '../common/Modal'
 import { COURTS, TIME_SLOTS, BOOKING_STATUS } from '../../lib/constants'
+import { todayISO } from '../../lib/dateUtils'
 
 const emptyForm = { court_id: COURTS[0], booking_date: '', time_slot: TIME_SLOTS[0].value, customer_name: '', notes: '' }
 
@@ -51,11 +52,15 @@ export default function BookingModal({ open, mode, kind, initial, onClose, onSav
   async function handleSubmit(e) {
     e.preventDefault()
     if (!form.customer_name.trim()) {
-      setFormError(activeKind === 'block' ? 'A reason is required.' : 'Customer name is required.')
+      setFormError(activeKind === 'block' ? 'A name is required.' : 'Customer name is required.')
       return
     }
     if (!form.booking_date) {
       setFormError('Pick a date.')
+      return
+    }
+    if (form.booking_date < todayISO()) {
+      setFormError('Pick a date that isn\u2019t in the past.')
       return
     }
 
@@ -156,35 +161,34 @@ export default function BookingModal({ open, mode, kind, initial, onClose, onSav
             type="date"
             value={form.booking_date}
             onChange={(e) => updateField('booking_date', e.target.value)}
+            min={todayISO()}
             required
             className="rounded-lg border border-court-line bg-white px-3 py-2 text-sm outline-none focus:border-court-forest"
           />
         </label>
 
         <label className="flex flex-col gap-1.5 text-sm font-medium text-court-ink">
-          {isBlock ? 'Reason' : 'Customer name'}
+          {isBlock ? 'Name' : 'Customer name'}
           <input
             type="text"
             value={form.customer_name}
             onChange={(e) => updateField('customer_name', e.target.value)}
-            placeholder={isBlock ? 'e.g. Tournament, Maintenance' : 'e.g. Maria Santos'}
+            placeholder={isBlock ? 'e.g. Tournament, Court maintenance' : 'e.g. Maria Santos'}
             required
             className="rounded-lg border border-court-line bg-white px-3 py-2 text-sm outline-none focus:border-court-forest"
           />
         </label>
 
-        {!isBlock && (
-          <label className="flex flex-col gap-1.5 text-sm font-medium text-court-ink">
-            Notes <span className="font-normal text-court-ink-soft">(optional)</span>
-            <textarea
-              value={form.notes}
-              onChange={(e) => updateField('notes', e.target.value)}
-              rows={2}
-              placeholder="Paddle rental, group size, etc."
-              className="resize-none rounded-lg border border-court-line bg-white px-3 py-2 text-sm outline-none focus:border-court-forest"
-            />
-          </label>
-        )}
+        <label className="flex flex-col gap-1.5 text-sm font-medium text-court-ink">
+          {isBlock ? 'Description' : 'Notes'} <span className="font-normal text-court-ink-soft">(optional)</span>
+          <textarea
+            value={form.notes}
+            onChange={(e) => updateField('notes', e.target.value)}
+            rows={2}
+            placeholder={isBlock ? 'Bracket details, organizer contact, etc.' : 'Paddle rental, group size, etc.'}
+            className="resize-none rounded-lg border border-court-line bg-white px-3 py-2 text-sm outline-none focus:border-court-forest"
+          />
+        </label>
 
         {formError && (
           <p role="alert" className="text-sm font-medium text-status-danger">
